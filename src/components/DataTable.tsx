@@ -6,6 +6,9 @@ export interface Column<T> {
   header: ReactNode;
   /** Zahlen rechtsbündig mit tabellarischen Ziffern. */
   numeric?: boolean;
+  /** Feste Breite (z. B. 96 oder "12ch"). Sobald eine Spalte eine Breite hat, wird das Layout fest:
+      Spalten springen dann nicht mehr, wenn sich Werte ändern. Spalten ohne Breite teilen sich den Rest. */
+  width?: number | string;
   render: (row: T) => ReactNode;
 }
 
@@ -17,13 +20,24 @@ export interface DataTableProps<T> {
   empty?: ReactNode;
   /** Mindestbreite, ab der horizontal gescrollt wird. */
   minWidth?: number;
+  /** Kompakte Zeilen für viele Messwerte. */
+  dense?: boolean;
+  /** Ausgeschaltete/inaktive Zeilen gedimmt darstellen. */
+  isRowDimmed?: (row: T) => boolean;
 }
 
-export function DataTable<T>({ columns, rows, rowKey, onRowClick, empty, minWidth = 560 }: DataTableProps<T>) {
+export function DataTable<T>({ columns, rows, rowKey, onRowClick, empty, minWidth = 560, dense, isRowDimmed }: DataTableProps<T>) {
   if (rows.length === 0) return <>{empty ?? <EmptyState title="Keine Einträge" />}</>;
+  const fixed = columns.some((c) => c.width != null);
+  const cls = ["cui-table", dense && "cui-table--dense", fixed && "cui-table--fixed"].filter(Boolean).join(" ");
   return (
     <div className="cui-table-wrap">
-      <table className="cui-table" style={{ minWidth }}>
+      <table className={cls} style={{ minWidth }}>
+        {fixed && (
+          <colgroup>
+            {columns.map((c) => <col key={c.key} style={c.width != null ? { width: c.width } : undefined} />)}
+          </colgroup>
+        )}
         <thead>
           <tr>
             {columns.map((c) => (
@@ -36,6 +50,7 @@ export function DataTable<T>({ columns, rows, rowKey, onRowClick, empty, minWidt
             <tr
               key={rowKey(r)}
               data-clickable={onRowClick ? "true" : undefined}
+              data-off={isRowDimmed?.(r) ? "true" : undefined}
               onClick={onRowClick ? () => onRowClick(r) : undefined}
               tabIndex={onRowClick ? 0 : undefined}
               onKeyDown={onRowClick ? (e) => { if (e.key === "Enter") onRowClick(r); } : undefined}

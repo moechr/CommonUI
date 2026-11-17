@@ -7,7 +7,7 @@ document.body.classList.add("cui-body");
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="light">
       <ToastProvider>
         <App />
       </ToastProvider>

@@ -42,4 +42,6 @@ export function series(s: Signal): number[] {
   });
 }
 
-export const fmt = (n: number, d = 1) => n.toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
+/** Zahl mit deutschem Komma und echtem Minuszeichen (U+2212). */
+export const fmt = (n: number, d = 1) =>
+  n.toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d }).replace("-", "−");

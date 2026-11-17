@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-import { Toolbar, Tabs, Segmented, Button, IconButton, Chip, DataTable, Panel, Banner, type Column, type TabItem, useToast } from "../src";
+import { Toolbar, Tabs, Segmented, Button, IconButton, Chip, DataTable, Panel, Banner, TimeChart, type Column, type TabItem, useToast } from "../src";
 import { signals, signalState, stateText, series, fmt, type Signal } from "./data";
-import { LineChart } from "./LineChart";
 
 interface Props {
   selected: Signal;
@@ -28,12 +27,12 @@ export function MeasurementView({ selected, onSelect, onAskAssistant }: Props) {
   const issues = signals.filter((s) => signalState(s) !== "ok").length;
 
   const columns: Column<Signal>[] = [
-    { key: "id", header: "ID", render: (s) => <code style={{ fontFamily: "var(--cui-mono)", fontSize: 12 }}>{s.id}</code> },
+    { key: "id", header: "ID", width: 80, render: (s) => <code style={{ fontFamily: "var(--cui-mono)", fontSize: 12 }}>{s.id}</code> },
     { key: "name", header: "Botschaft", render: (s) => <span style={{ fontWeight: s.id === selected.id ? 600 : 400 }}>{s.name}</span> },
-    { key: "node", header: "Sender", render: (s) => s.node },
-    { key: "target", header: "Soll", numeric: true, render: (s) => `${fmt(s.target, 0)} ms` },
-    { key: "actual", header: "Ist", numeric: true, render: (s) => `${fmt(s.actual)} ms` },
-    { key: "state", header: "Status", render: (s) => { const st = signalState(s); return <Chip tone={st}>{stateText[st]}</Chip>; } },
+    { key: "node", header: "Sender", width: 100, render: (s) => s.node },
+    { key: "target", header: "Soll", numeric: true, width: 90, render: (s) => `${fmt(s.target, 0)} ms` },
+    { key: "actual", header: "Ist", numeric: true, width: 90, render: (s) => `${fmt(s.actual)} ms` },
+    { key: "state", header: "Status", width: 120, render: (s) => { const st = signalState(s); return <Chip tone={st}>{stateText[st]}</Chip>; } },
   ];
 
   const close = (id: string) => {
@@ -87,7 +86,13 @@ export function MeasurementView({ selected, onSelect, onAskAssistant }: Props) {
               <span className="cui-text-caption">letzte 60 s</span>
             </div>
           </div>
-          <LineChart values={series(selected)} target={selected.target} tone={signalState(selected)} />
+          <TimeChart
+            series={[{ name: `T ${selected.id}`, values: series(selected), color: `var(--cui-${signalState(selected) === "ok" ? "chart-1" : signalState(selected)})` }]}
+            yAxis={{ label: "Zykluszeit T", unit: "ms" }}
+            limits={[{ value: selected.target, label: "T soll", tone: "ok" }]}
+            bands={[{ from: selected.target * 0.9, to: selected.target * 1.1, tone: "ok" }]}
+            height={240}
+          />
         </Panel>
 
         <div className="cui-cluster" style={{ justifyContent: "space-between" }}>

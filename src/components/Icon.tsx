@@ -41,6 +41,8 @@ const paths = {
   record: "M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z",
   bolt: "M13 3L5 14h6l-1 7 8-11h-6z",
   grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+  sun: "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
+  moon: "M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z",
 } as const;
 
 export type IconName = keyof typeof paths;

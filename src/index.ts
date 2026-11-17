@@ -13,6 +13,16 @@ export { Text, Chip, Kbd, Avatar, Meter, KeyValue, Panel, Banner, EmptyState } f
 export type { TextVariant, TextProps, Tone, ChipProps, MeterProps, BannerProps, BannerTone, EmptyStateProps } from "./components/Display";
 export { Field, Input, Select, Textarea, SearchField, Switch, Slider, Segmented } from "./components/Form";
 export type { FieldProps, SearchFieldProps, SwitchProps, SliderProps, SegmentedProps, SegmentedOption } from "./components/Form";
+export { Toggle, Led, NumberField, SwitchTile } from "./components/Control";
+export type { ToggleProps, LedProps, LedTone, NumberFieldProps, SwitchTileProps } from "./components/Control";
+export { PageHeader, LiveBadge, TileGrid, Tile, ValueTile } from "./components/Tiles";
+export type { PageHeaderProps, TileProps, TileSpan, ValueTileProps } from "./components/Tiles";
+export { TimeChart } from "./components/TimeChart";
+export type { TimeChartProps, ChartSeries, ChartAxis, ChartLimit, ChartBand } from "./components/TimeChart";
+export { Sparkline } from "./components/Sparkline";
+export type { SparklineProps } from "./components/Sparkline";
+export { ThemeToggle } from "./components/ThemeToggle";
+export type { ThemeToggleProps } from "./components/ThemeToggle";
 export { Tabs } from "./components/Tabs";
 export type { TabItem, TabsProps } from "./components/Tabs";
 export { DataTable } from "./components/DataTable";

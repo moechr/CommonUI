@@ -1,16 +1,17 @@
 import { useState } from "react";
 import {
   AppShell, TitleBar, Sidebar, NavSection, NavItem, Main, Toolbar, Inspector, StatusBar, StatusItem,
-  Chip, Avatar, Segmented, SearchField, KeyValue, Button, IconButton, EmptyState, Switch,
-  useTheme, type ThemeSetting, type IconName,
+  Chip, Avatar, Segmented, KeyValue, Button, IconButton, EmptyState, Switch,
+  ThemeToggle, useTheme, type ThemeSetting, type IconName,
 } from "../src";
 import { ChatView } from "./ChatView";
 import { GalleryView } from "./GalleryView";
 import { MeasurementView } from "./MeasurementView";
 import { OverviewView } from "./OverviewView";
+import { HardwareView } from "./HardwareView";
 import { signals, signalState, stateText, fmt, type Signal } from "./data";
 
-type View = "overview" | "measurements" | "signals" | "reports" | "assistant" | "automation" | "devices" | "settings" | "components";
+type View = "hardware" | "overview" | "measurements" | "signals" | "reports" | "assistant" | "automation" | "devices" | "settings" | "components";
 
 const placeholders: Partial<Record<View, { title: string; icon: IconName }>> = {
   signals: { title: "Signale", icon: "wave" },
@@ -20,7 +21,7 @@ const placeholders: Partial<Record<View, { title: string; icon: IconName }>> = {
 };
 
 export function App() {
-  const [view, setView] = useState<View>("measurements");
+  const [view, setView] = useState<View>("hardware");
   const [selected, setSelected] = useState<Signal>(signals[2]);
   const [alarm, setAlarm] = useState(true);
   const { theme, setTheme } = useTheme();
@@ -32,10 +33,10 @@ export function App() {
   const titleBar = (
     <TitleBar
       appName="Werkbank"
-      context="Prüfstand A › trace_0914.blf"
-      center={<SearchField placeholder="Signale, Messungen, Befehle" shortcut="Strg K" />}
+      context={view === "hardware" ? "Testboard A › Hardware-Test" : "Prüfstand A › trace_0914.blf"}
       actions={
         <>
+          <ThemeToggle />
           <Button variant="primary" icon="record">Aufnahme</Button>
           <IconButton icon="sparkle" label="Assistent" className="cui-hide-sm" onClick={() => setView("assistant")} />
           <IconButton icon="bell" label="Mitteilungen" className="cui-hide-sm" />
@@ -49,6 +50,7 @@ export function App() {
     <Sidebar footer={<>Lokal · v0.1</>}>
       <NavSection label="Arbeitsbereich">
         {nav("overview", "home", "Übersicht")}
+        {nav("hardware", "chip", "Hardware-Test")}
         {nav("measurements", "folder", "Messungen", 3)}
         {nav("signals", "wave", "Signale")}
         {nav("reports", "doc", "Berichte")}
@@ -106,6 +108,7 @@ export function App() {
     <div style={{ height: "100dvh" }}>
       <AppShell titleBar={titleBar} sidebar={sidebar} inspector={inspector} statusBar={statusBar}>
         <Main>
+          {view === "hardware" && <HardwareView />}
           {view === "overview" && <OverviewView onOpen={() => setView("measurements")} />}
           {view === "measurements" && (
             <MeasurementView selected={selected} onSelect={setSelected} onAskAssistant={() => setView("assistant")} />

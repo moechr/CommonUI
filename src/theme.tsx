@@ -14,14 +14,14 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = "cui-theme";
 
-function readStored(): ThemeSetting {
+function readStored(fallback: ThemeSetting): ThemeSetting {
   try {
     const v = localStorage.getItem(STORAGE_KEY);
     if (v === "light" || v === "dark" || v === "system") return v;
   } catch {
     /* Speicher nicht verfügbar */
   }
-  return "system";
+  return fallback;
 }
 
 function systemPrefersDark(): boolean {
@@ -40,7 +40,7 @@ export interface ThemeProviderProps {
  * Setzt data-theme auf <html>. "system" entfernt das Attribut, dann greift prefers-color-scheme.
  */
 export function ThemeProvider({ children, defaultTheme = "system", persist = true }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<ThemeSetting>(() => (persist ? readStored() : defaultTheme));
+  const [theme, setThemeState] = useState<ThemeSetting>(() => (persist ? readStored(defaultTheme) : defaultTheme));
   const [sysDark, setSysDark] = useState(systemPrefersDark);
 
   useEffect(() => {
