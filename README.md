@@ -3,6 +3,8 @@
 Gemeinsame React-Oberfläche für alle KI-Projekte im Browser.
 Tokens, App-Shell, Chat- und Formular-Komponenten, hell und dunkel, angelehnt an Apples Human Interface Guidelines.
 
+**Live-Demo:** https://moechr.github.io/CommonUI/
+
 ## Starten
 
 ```bash
