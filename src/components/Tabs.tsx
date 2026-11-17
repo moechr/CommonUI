@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { cx } from "../utils";
 import { Icon, type IconName } from "./Icon";
 
@@ -16,8 +15,6 @@ export interface TabsProps {
   onSelect: (id: string) => void;
   onClose?: (id: string) => void;
   onAdd?: () => void;
-  /** Rechts neben den Tabs, z. B. weitere Aktionen. */
-  trailing?: ReactNode;
 }
 
 /** Dokument-Tabs wie in Desktop-Anwendungen (mehrere offene Messungen, Dateien …). */

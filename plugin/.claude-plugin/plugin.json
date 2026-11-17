@@ -1,0 +1,10 @@
+{
+  "name": "common-ui",
+  "description": "Oberflächen mit @ki/common-ui bauen: Projekt einrichten, App-Gerüst, Steuer- und Messansichten, technische Diagramme nach DIN 461.",
+  "version": "0.2.0",
+  "author": {
+    "name": "moechr"
+  },
+  "homepage": "https://github.com/moechr/CommonUI",
+  "repository": "https://github.com/moechr/CommonUI"
+}

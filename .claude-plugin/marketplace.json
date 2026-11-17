@@ -1,0 +1,17 @@
+{
+  "name": "commonui",
+  "owner": {
+    "name": "moechr"
+  },
+  "metadata": {
+    "description": "Common UI für technische Software-Anwendungen mit KI-Funktionen"
+  },
+  "plugins": [
+    {
+      "name": "common-ui",
+      "source": "./plugin",
+      "description": "Oberflächen mit @ki/common-ui bauen: Projekt einrichten, App-Gerüst, Steuer- und Messansichten, technische Diagramme nach DIN 461.",
+      "version": "0.2.0"
+    }
+  ]
+}

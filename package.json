@@ -1,6 +1,6 @@
 {
   "name": "@ki/common-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Gemeinsame React-Oberfläche für KI-Projekte: Tokens, App-Shell, Chat- und Formular-Komponenten.",
   "type": "module",
   "main": "./dist/common-ui.js",
@@ -14,7 +14,11 @@
     "./style.css": "./dist/common-ui.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "docs",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "llms.txt"
   ],
   "scripts": {
     "dev": "vite",

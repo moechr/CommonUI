@@ -1,0 +1,23 @@
+# Common UI (@ki/common-ui)
+
+> React-Bibliothek für technische Software-Anwendungen im Browser (Mess-, Prüf- und Steueroberflächen mit KI-Funktionen). Aufbau wie eine Desktop-Anwendung, Farbschema nach Apple HIG, hell und dunkel, Diagramme nach DIN 461. Sprache der Oberfläche und Doku: Deutsch.
+
+Einbinden: `npm install github:moechr/CommonUI#v0.2.0`, dann `import "@ki/common-ui/style.css"`.
+
+## Für KI-Assistenten
+
+- [AGENTS.md](https://raw.githubusercontent.com/moechr/CommonUI/main/AGENTS.md): Seitenaufbau, verbindliche Regeln, Aufgabe → Baustein
+- [Komponenten-Referenz](https://raw.githubusercontent.com/moechr/CommonUI/main/docs/components.md): alle Exporte mit Props
+- [Startvorlage](https://github.com/moechr/CommonUI/tree/main/templates/app): minimales Projekt zum Kopieren
+- [CHANGELOG](https://raw.githubusercontent.com/moechr/CommonUI/main/CHANGELOG.md): Änderungen je Version
+
+## Beispiele
+
+- [Live-Demo](https://moechr.github.io/CommonUI/): Hardware-Test, Messungen, Assistent, Komponenten-Galerie
+- [Hardware-Test-Ansicht](https://github.com/moechr/CommonUI/blob/main/demo/HardwareView.tsx): Kacheln, Schaltfeld, Live-Werte, TimeChart
+- [App-Gerüst](https://github.com/moechr/CommonUI/blob/main/demo/App.tsx): AppShell mit TitleBar, Sidebar, Inspector, StatusBar
+
+## Optional
+
+- [Tokens](https://github.com/moechr/CommonUI/blob/main/src/styles/tokens.css)
+- [Claude-Code-Skill](https://github.com/moechr/CommonUI/blob/main/plugin/skills/common-ui/SKILL.md)

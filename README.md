@@ -15,7 +15,33 @@ Farbschema und Regeln angelehnt an Apples Human Interface Guidelines, hell und d
 Seitenmenü: Schalter in der Titelleiste, „Einklappen“ unten im Menü oder **Strg/⌘+B**. Der Zustand wird gespeichert.
 Unter 1060 px Breite verschwindet der Inspector, unter 720 px wird das Menü zum Overlay.
 
-**Live-Demo:** https://moechr.github.io/CommonUI/
+**Live-Demo:** https://moechr.github.io/CommonUI/ · **Version:** 0.2.0 ([Änderungen](CHANGELOG.md))
+
+## Für KI-Assistenten und neue Projekte
+
+| Datei | Zweck |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | Verbindliche Regeln, Seitenaufbau, Aufgabe → Baustein. Wird von Claude Code (über `CLAUDE.md`), Copilot, Cursor u. a. gelesen. |
+| [`docs/components.md`](docs/components.md) | Alle Bausteine mit Props |
+| [`llms.txt`](llms.txt) | Inhaltsverzeichnis für KI-Werkzeuge |
+| [`templates/app/`](templates/app/) | Startvorlage: Vite + React + TypeScript mit App-Gerüst und Steueransicht |
+| [`plugin/`](plugin/) | Claude-Code-Plugin mit Skill `common-ui` |
+
+`AGENTS.md` und die Referenz liegen nach der Installation auch unter `node_modules/@ki/common-ui/`, die KI findet sie also in jedem Projekt.
+
+**Neues Projekt aus der Vorlage:**
+
+```bash
+npx degit moechr/CommonUI/templates/app mein-tool
+cd mein-tool && npm install && npm run dev
+```
+
+**Claude Code einmalig einrichten** (danach kennt Claude die Common UI in jedem Projekt):
+
+```
+/plugin marketplace add moechr/CommonUI
+/plugin install common-ui@commonui
+```
 
 ## Starten
 
@@ -36,7 +62,7 @@ npm install ../common-ui
 Variante B, über Git:
 
 ```bash
-npm install github:moechr/CommonUI#v0.1.0
+npm install github:moechr/CommonUI#v0.2.0
 ```
 
 Dann:
@@ -116,7 +142,7 @@ export function App() {
 </div>
 ```
 
-Unter 960 px Containerbreite werden 3er/4er-Kacheln halb und 8er/9er ganz breit, unter 600 px stehen Werte-Kacheln zu zweit, alles andere untereinander.
+Unter 960 px Containerbreite werden 3er-Kacheln halb und 4er/8er/9er ganz breit, unter 600 px stehen Werte-Kacheln zu zweit, alles andere untereinander.
 
 ## Diagramme
 
@@ -150,8 +176,12 @@ Diagramme sind zum Ablesen da, nicht zur Dekoration:
 6. Ansichten bestehen aus `Toolbar` + `.cui-content`; Auswahl-Details gehören in den `Inspector`, nicht in Dialoge.
 7. Schalten wirkt sofort; bei Massenaktionen („Alle ausschalten“) Rückgängig per Toast anbieten statt Bestätigungsdialog.
 8. Laufend aktualisierte Werte mit `LiveBadge` kennzeichnen und anhaltbar machen.
-9. Neue Bausteine zuerst in `demo/GalleryView.tsx` zeigen, dann in Projekten nutzen.
+9. Tabellen mit Live-Werten: allen Spalten außer der Namensspalte eine `width` geben, sonst springen sie.
+10. Suche (`SearchField`) nur bei Bedarf, kein fester Bestandteil der Titelleiste.
+11. Neue Bausteine zuerst in `demo/GalleryView.tsx` zeigen, dann in Projekten nutzen.
 
 ## Versionierung
 
-Semantische Versionen mit Git-Tags (`v0.1.0`, `v0.2.0` …). Projekte pinnen eine Version, damit Änderungen an der Common UI sie nicht unbemerkt verändern.
+Semantische Versionen mit Git-Tags (`v0.2.0`, `v0.3.0` …), Änderungen in [`CHANGELOG.md`](CHANGELOG.md). Projekte pinnen eine Version, damit Änderungen an der Common UI sie nicht unbemerkt verändern.
+
+Neue Version veröffentlichen: Version in `package.json`, `plugin/.claude-plugin/plugin.json` und `.claude-plugin/marketplace.json` erhöhen, `CHANGELOG.md` ergänzen, Installationszeilen (`#v…`) in README, `AGENTS.md`, `llms.txt`, Skill und `templates/app/package.json` anpassen, committen, `git tag v0.x.y`, `git push --tags`.

@@ -86,7 +86,7 @@ export function HardwareView() {
   const rows: Row[] = useMemo(() => channels.map((c, n) => ({ n, c, r: readings[n] })), [channels, readings]);
   const columns: Column<Row>[] = [
     { key: "ch", header: "Kanal", width: 110, render: ({ n }) => <><b>CH{n}</b><span className="cui-sub">0x{(0x40 + n).toString(16)}</span></> },
-    { key: "sw", header: "Schalter", width: 90, render: ({ n, c }) => <Toggle size="sm" checked={c.on && !c.fault} onChange={(v) => setOn(n, v)} label={`CH${n} schalten`} /> },
+    { key: "sw", header: "Schalter", width: 104, render: ({ n, c }) => <Toggle size="sm" checked={c.on && !c.fault} onChange={(v) => setOn(n, v)} label={`CH${n} schalten`} /> },
     { key: "v", header: "Spannung", numeric: true, width: 100, render: ({ r }) => `${fmt(r.v, 2)} V` },
     { key: "i", header: "Strom", numeric: true, width: 100, render: ({ r }) => `${fmt(r.i, 3)} A` },
     { key: "p", header: "Leistung", numeric: true, width: 100, render: ({ r }) => `${fmt(r.p, 2)} W` },
