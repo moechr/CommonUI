@@ -154,7 +154,7 @@ textarea.cui-input { resize: vertical; line-height: 1.5; }
 .cui-table tr:last-child td { border-bottom: 0; }
 .cui-table tbody tr[data-clickable="true"] { cursor: pointer; }
 .cui-table tbody tr[data-clickable="true"]:hover td { background: var(--cui-surface-2); }
-.cui-table .cui-num { text-align: right; font-variant-numeric: tabular-nums; }
+.cui-table .cui-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ---------- App-Shell ---------- */
 .cui-shell {
