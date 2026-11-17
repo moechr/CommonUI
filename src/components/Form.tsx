@@ -50,6 +50,24 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
   return <textarea ref={ref} className={cx("cui-input", className)} {...rest} />;
 });
 
+/* ---------- SearchField ---------- */
+export interface SearchFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  /** Tastenkürzel-Hinweis rechts im Feld, z. B. "Strg K". */
+  shortcut?: string;
+}
+
+export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(function SearchField(
+  { shortcut, className, placeholder = "Suchen", ...rest }, ref,
+) {
+  return (
+    <div className={cx("cui-search", className)}>
+      <svg viewBox="0 0 24 24" className="cui-icon" aria-hidden><path d="M11 5a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM20 20l-4-4" /></svg>
+      <input ref={ref} type="search" className="cui-input" placeholder={placeholder} aria-label={placeholder} {...rest} />
+      {shortcut && <kbd className="cui-kbd">{shortcut}</kbd>}
+    </div>
+  );
+});
+
 /* ---------- Switch ---------- */
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
   label: ReactNode;

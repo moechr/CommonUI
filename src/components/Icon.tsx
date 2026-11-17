@@ -26,6 +26,21 @@ const paths = {
   stop: "M7 7h10v10H7z",
   copy: "M9 9h11v11H9zM5 15H4V4h11v1",
   refresh: "M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7",
+  sidebar: "M4 5h16v14H4zM9 5v14",
+  chevronLeft: "M15 6l-6 6 6 6",
+  chevronRight: "M9 6l6 6-6 6",
+  chevronDown: "M6 9l6 6 6-6",
+  home: "M4 11l8-7 8 7v9h-5v-6H9v6H4z",
+  folder: "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+  wave: "M3 12h3l2-6 4 12 3-9 2 3h4",
+  doc: "M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6",
+  device: "M4 6h16v10H4zM8 20h8M12 16v4",
+  bell: "M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4",
+  filter: "M4 5h16l-6 8v6l-4-2v-4z",
+  download: "M12 4v11M7 10l5 5 5-5M5 20h14",
+  record: "M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z",
+  bolt: "M13 3L5 14h6l-1 7 8-11h-6z",
+  grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
 } as const;
 
 export type IconName = keyof typeof paths;

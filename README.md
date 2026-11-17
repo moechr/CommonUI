@@ -1,7 +1,19 @@
 # @ki/common-ui
 
-Gemeinsame React-Oberfläche für alle KI-Projekte im Browser.
-Tokens, App-Shell, Chat- und Formular-Komponenten, hell und dunkel, angelehnt an Apples Human Interface Guidelines.
+Gemeinsame React-Oberfläche für Software-Anwendungen mit KI-Funktionen im Browser.
+Aufbau wie eine Desktop-Anwendung (Titelleiste, einklappbares Seitenmenü, Arbeitsbereich mit Tabs, Inspector, Statusleiste),
+Farbschema und Regeln angelehnt an Apples Human Interface Guidelines, hell und dunkel.
+
+```
+┌──────────────────────── TitleBar ────────────────────────┐
+│ Sidebar │  Toolbar / Tabs                     │ Inspector │
+│ (ein-/  │  Arbeitsbereich                     │ (Eigen-   │
+│ klappbar│                                     │ schaften) │
+└──────────────────────── StatusBar ───────────────────────┘
+```
+
+Seitenmenü: Schalter in der Titelleiste, „Einklappen“ unten im Menü oder **Strg/⌘+B**. Der Zustand wird gespeichert.
+Unter 1060 px Breite verschwindet der Inspector, unter 720 px wird das Menü zum Overlay.
 
 **Live-Demo:** https://moechr.github.io/CommonUI/
 
@@ -32,8 +44,8 @@ Dann:
 ```tsx
 import "@ki/common-ui/style.css";
 import {
-  ThemeProvider, ToastProvider, AppShell, Sidebar, NavSection, NavItem,
-  Main, Toolbar, Thread, Message, Composer, Chip,
+  ThemeProvider, ToastProvider, AppShell, TitleBar, Sidebar, NavSection, NavItem,
+  Main, Toolbar, Inspector, StatusBar, StatusItem, Chip,
 } from "@ki/common-ui";
 
 export function App() {
@@ -41,11 +53,22 @@ export function App() {
     <ThemeProvider>
       <ToastProvider>
         <div style={{ height: "100dvh" }}>
-          <AppShell sidebar={<Sidebar title="Mein Tool"><NavSection label="Projekte"><NavItem icon="list" active>Start</NavItem></NavSection></Sidebar>}>
+          <AppShell
+            titleBar={<TitleBar appName="Mein Tool" context="Projekt A" />}
+            sidebar={
+              <Sidebar footer="v0.1">
+                <NavSection label="Arbeitsbereich">
+                  <NavItem icon="home" active>Übersicht</NavItem>
+                  <NavItem icon="folder" badge={3}>Messungen</NavItem>
+                </NavSection>
+              </Sidebar>
+            }
+            inspector={<Inspector title="Eigenschaften">…</Inspector>}
+            statusBar={<StatusBar><StatusItem tone="ok">Verbunden</StatusItem></StatusBar>}
+          >
             <Main>
-              <Toolbar title="Neuer Chat" status={<Chip tone="ok">Verbunden</Chip>} />
-              <Thread><Message role="assistant"><p>Hallo!</p></Message></Thread>
-              <Composer onSubmit={(t) => console.log(t)} />
+              <Toolbar title="Übersicht" status={<Chip tone="ok">Bereit</Chip>} />
+              <div className="cui-content">…</div>
             </Main>
           </AppShell>
         </div>
@@ -61,11 +84,11 @@ export function App() {
 |---|---|
 | `src/styles/tokens.css` | Alle Farben, Schriftgrößen, Abstände, Radien. Hier die Marke ändern. |
 | `src/styles/components.css` | Styles aller Komponenten, nur über Tokens. |
-| `src/components/` | Button, IconButton, Icon, Text, Chip, Meter, KeyValue, Panel, Banner, EmptyState, Field, Input, Select, Textarea, Switch, Slider, Segmented, DataTable, Toast |
-| `src/shell/` | AppShell, Sidebar, NavSection, NavItem, Main, Toolbar, Inspector |
-| `src/chat/` | Thread, Message, ToolCall, Citation, TypingIndicator, Composer |
+| `src/components/` | Button, IconButton, Icon, Text, Chip, Meter, KeyValue, Panel, Banner, EmptyState, Field, Input, Select, Textarea, SearchField, Switch, Slider, Segmented, Tabs, DataTable, Toast |
+| `src/shell/` | AppShell, TitleBar, Sidebar (einklappbar), NavSection, NavItem, Main, Toolbar, Inspector, StatusBar, StatusItem, useShell |
+| `src/chat/` | Thread, Message, ToolCall, Citation, TypingIndicator, Composer (für eine Assistent-Ansicht) |
 | `src/theme.tsx` | ThemeProvider + useTheme (System / Hell / Dunkel) |
-| `demo/` | Beispiel-App: Chat-Ansicht und Komponenten-Galerie |
+| `demo/` | Beispiel-Anwendung „Werkbank“: Übersicht, Messungen (Tabs, Diagramm, Tabelle, Inspector), Assistent, Komponenten-Galerie |
 | `docs/mockup.html` | Ursprünglicher HTML-Entwurf (ohne Build im Browser öffnen) |
 
 ## Regeln
@@ -75,7 +98,8 @@ export function App() {
 3. Status immer mit Text, nie nur über Farbe.
 4. KI-Inhalte (Werkzeugaufrufe, generierte Elemente) sind violett markiert (`tone="ai"`).
 5. Klickziele mindestens 44 px auf Touch, sichtbarer Fokus, `prefers-reduced-motion` respektieren.
-6. Neue Bausteine zuerst in `demo/GalleryView.tsx` zeigen, dann in Projekten nutzen.
+6. Ansichten bestehen aus `Toolbar` + `.cui-content`; Auswahl-Details gehören in den `Inspector`, nicht in Dialoge.
+7. Neue Bausteine zuerst in `demo/GalleryView.tsx` zeigen, dann in Projekten nutzen.
 
 ## Versionierung
 
