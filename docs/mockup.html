@@ -1,0 +1,415 @@
+<title>KI Common UI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: App-Shell (Sidebar · Arbeitsfläche · Inspector) oben, darunter Token- und Komponenten-Referenz. 4-pt-Raster, HIG-nahe Ziele (44 px Touch, Systemschrift zuerst). */
+:root{
+  /* Farbe – semantisch benannt, nie direkt Hex in Komponenten */
+  --bg:#F5F7F9; --surface:#FFFFFF; --surface-2:#EEF2F5; --fill:#E3E9EE;
+  --fg:#16212B; --fg-2:#4D5B68; --fg-3:#7D8A96; --line:#D8E0E6;
+  --accent:#0B6B8F; --accent-fg:#FFFFFF; --accent-soft:#DCEFF6;
+  --ok:#1E8550; --ok-soft:#DDF2E6; --warn:#A8670F; --warn-soft:#FBEBD2;
+  --err:#C1324A; --err-soft:#F9DEE3; --ai:#6B4FD6; --ai-soft:#ECE7FC;
+  --material:rgba(255,255,255,.72);
+  /* Typo */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", Inter, system-ui, sans-serif;
+  --mono: "SF Mono", "JetBrains Mono", Consolas, ui-monospace, monospace;
+  --t-large:34px; --t-title1:28px; --t-title2:22px; --t-title3:20px; --t-headline:17px; --t-body:15px; --t-callout:14px; --t-caption:12px;
+  /* Abstände (4-pt-Raster), Radien, Schatten */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  --r-s:6px; --r-m:10px; --r-l:14px; --r-pill:999px;
+  --shadow:0 1px 2px rgba(16,33,43,.06), 0 8px 24px rgba(16,33,43,.08);
+  --hit:44px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1418; --surface:#161E24; --surface-2:#1C262D; --fill:#25313A;
+  --fg:#E8EEF2; --fg-2:#A9B6C0; --fg-3:#76848F; --line:#2A3740;
+  --accent:#4FB4DA; --accent-fg:#06222D; --accent-soft:#12313D;
+  --ok:#4CC488; --ok-soft:#123224; --warn:#E3A64A; --warn-soft:#352610;
+  --err:#F0687F; --err-soft:#3A1720; --ai:#A794F5; --ai-soft:#251E44;
+  --material:rgba(22,30,36,.72);
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1418; --surface:#161E24; --surface-2:#1C262D; --fill:#25313A;
+  --fg:#E8EEF2; --fg-2:#A9B6C0; --fg-3:#76848F; --line:#2A3740;
+  --accent:#4FB4DA; --accent-fg:#06222D; --accent-soft:#12313D;
+  --ok:#4CC488; --ok-soft:#123224; --warn:#E3A64A; --warn-soft:#352610;
+  --err:#F0687F; --err-soft:#3A1720; --ai:#A794F5; --ai-soft:#251E44;
+  --material:rgba(22,30,36,.72);
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:var(--t-body)/1.5 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding-block:var(--s6) var(--s7);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:var(--s7)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:var(--t-large);font-weight:700}
+h2{font-size:var(--t-title2);font-weight:650}
+h3{font-size:var(--t-headline);font-weight:600}
+p{margin:0}
+.muted{color:var(--fg-2)}
+.eyebrow{font-size:var(--t-caption);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:var(--r-s)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Kopf */
+.top{display:flex;flex-wrap:wrap;gap:var(--s4);align-items:end;justify-content:space-between}
+.top .lead{max-width:62ch;display:grid;gap:var(--s2)}
+
+/* Controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);min-height:36px;padding:0 var(--s4);border-radius:var(--r-m);border:1px solid transparent;font:600 var(--t-callout) var(--font);cursor:pointer;transition:background .15s, transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--accent);color:var(--accent-fg)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-secondary{background:var(--fill);color:var(--fg)}
+.btn-secondary:hover{background:var(--line)}
+.btn-plain{background:transparent;color:var(--accent)}
+.btn-plain:hover{background:var(--accent-soft)}
+.btn-danger{background:var(--err-soft);color:var(--err)}
+.btn-lg{min-height:var(--hit);padding:0 var(--s5);font-size:var(--t-body)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.icon-btn{width:36px;height:36px;padding:0;border-radius:var(--r-m);background:transparent;border:0;color:var(--fg-2);cursor:pointer;display:inline-grid;place-items:center}
+.icon-btn:hover{background:var(--fill);color:var(--fg)}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.seg{display:inline-flex;background:var(--fill);border-radius:var(--r-m);padding:2px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--fg-2);font:500 var(--t-callout) var(--font);padding:6px var(--s3);border-radius:8px;cursor:pointer;min-height:32px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+.field{display:grid;gap:6px}
+.field label{font-size:var(--t-caption);font-weight:600;color:var(--fg-2)}
+.input,select.input,textarea.input{width:100%;min-height:36px;padding:8px var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface);color:var(--fg);font:var(--t-callout) var(--font)}
+.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.hint{font-size:var(--t-caption);color:var(--fg-3)}
+
+.switch{position:relative;width:44px;height:26px;flex:none}
+.switch input{appearance:none;margin:0;width:100%;height:100%;border-radius:var(--r-pill);background:var(--fill);cursor:pointer;transition:background .2s}
+.switch input:checked{background:var(--ok)}
+.switch span{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s;pointer-events:none}
+.switch input:checked + span{transform:translateX(18px)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:var(--hit)}
+
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+.chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:var(--r-pill);font-size:var(--t-caption);font-weight:600;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.err{background:var(--err-soft);color:var(--err)}
+.chip.ai{background:var(--ai-soft);color:var(--ai)}
+.chip.neutral{background:var(--fill);color:var(--fg-2)}
+.kbd{font:500 11px var(--mono);padding:2px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;color:var(--fg-2);background:var(--surface)}
+
+/* ===== App-Shell ===== */
+.shell{display:grid;grid-template-columns:232px minmax(0,1fr) 280px;height:640px;border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.side{background:var(--surface-2);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.side-head{display:flex;align-items:center;gap:var(--s2);padding:var(--s4)}
+.logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--ai));display:grid;place-items:center;color:#fff;font:700 13px var(--font-display)}
+.side nav{padding:0 var(--s2);display:grid;gap:2px;overflow:auto}
+.nav-label{padding:var(--s3) var(--s3) var(--s1);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
+.nav-item{display:flex;align-items:center;gap:var(--s2);min-height:34px;padding:0 var(--s3);border-radius:8px;color:var(--fg-2);text-decoration:none;font-size:var(--t-callout)}
+.nav-item:hover{background:var(--fill);color:var(--fg)}
+.nav-item[aria-current="page"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-item .count{margin-left:auto;font-size:11px;color:var(--fg-3);font-variant-numeric:tabular-nums}
+.side-foot{margin-top:auto;padding:var(--s3) var(--s4);border-top:1px solid var(--line);display:flex;align-items:center;gap:var(--s2);font-size:var(--t-caption);color:var(--fg-2)}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-weight:600;font-size:12px;color:var(--fg-2)}
+
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
+.toolbar{display:flex;align-items:center;gap:var(--s2);padding:0 var(--s4);height:52px;border-bottom:1px solid var(--line);background:var(--material);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.toolbar h3{font-size:var(--t-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toolbar .spacer{flex:1}
+.thread{flex:1;overflow:auto;padding:var(--s5);display:grid;gap:var(--s5);align-content:start}
+.msg{display:grid;grid-template-columns:28px minmax(0,1fr);gap:var(--s3);max-width:72ch}
+.msg .who{font-size:var(--t-caption);font-weight:600;color:var(--fg-2);margin-bottom:2px}
+.msg.user .bubble{background:var(--surface-2);padding:var(--s3) var(--s4);border-radius:var(--r-l);border-top-left-radius:4px}
+.msg .bubble{display:grid;gap:var(--s2)}
+.ai-dot{width:28px;height:28px;border-radius:50%;background:var(--ai-soft);color:var(--ai);display:grid;place-items:center}
+.tool-call{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;font-size:var(--t-callout)}
+.tool-call summary{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);cursor:pointer;background:var(--surface-2);list-style:none}
+.tool-call summary::-webkit-details-marker{display:none}
+.tool-call pre{margin:0;padding:var(--s3);font:12px/1.55 var(--mono);color:var(--fg-2);overflow-x:auto;background:var(--surface)}
+.cite{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:5px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:600;vertical-align:1px}
+.typing{display:inline-flex;gap:4px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--fg-3);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+
+.composer{margin:0 var(--s5) var(--s4);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:var(--shadow);padding:var(--s2)}
+.composer textarea{width:100%;border:0;resize:none;background:transparent;color:var(--fg);font:var(--t-body) var(--font);padding:var(--s2);min-height:44px}
+.composer textarea:focus{outline:none}
+.composer .bar{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
+
+.inspector{border-left:1px solid var(--line);padding:var(--s4);display:grid;gap:var(--s4);align-content:start;overflow:auto;background:var(--surface)}
+.meter{height:6px;border-radius:var(--r-pill);background:var(--fill);overflow:hidden}
+.meter span{display:block;height:100%;background:var(--accent);border-radius:inherit}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px var(--s3);font-size:var(--t-callout)}
+.kv dt{color:var(--fg-2)}.kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+
+@media (max-width:1060px){.shell{grid-template-columns:200px minmax(0,1fr)}.inspector{display:none}}
+@media (max-width:720px){.shell{grid-template-columns:minmax(0,1fr);height:600px}.side{display:none}.thread{padding:var(--s4)}.composer{margin:0 var(--s3) var(--s3)}}
+
+/* ===== Referenz ===== */
+.section{display:grid;gap:var(--s5)}
+.section-head{display:grid;gap:var(--s1)}
+.grid{display:grid;gap:var(--s4);grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:var(--s5);display:grid;gap:var(--s4);align-content:start;min-width:0}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--s3)}
+.sw{display:grid;gap:6px;font-size:var(--t-caption)}
+.sw b{display:block;height:56px;border-radius:var(--r-m);border:1px solid var(--line)}
+.sw code{font:11px var(--mono);color:var(--fg-3)}
+.typescale{display:grid;gap:var(--s3)}
+.typescale div{display:flex;align-items:baseline;gap:var(--s4);border-bottom:1px solid var(--line);padding-bottom:var(--s2);min-width:0}
+.typescale code{font:11px var(--mono);color:var(--fg-3);width:120px;flex:none}
+.typescale span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spacing{display:grid;gap:var(--s2)}
+.spacing div{display:flex;align-items:center;gap:var(--s3);font:12px var(--mono);color:var(--fg-2)}
+.spacing i{display:block;height:12px;background:var(--accent);border-radius:3px}
+.cluster{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:var(--t-callout);min-width:560px}
+th{text-align:left;font-size:var(--t-caption);font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.05em;padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:var(--s3) var(--s4);border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.toast{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border-radius:var(--r-l);background:var(--fg);color:var(--bg);font-size:var(--t-callout);box-shadow:var(--shadow);width:fit-content;max-width:100%}
+.empty{display:grid;justify-items:center;text-align:center;gap:var(--s2);padding:var(--s6) var(--s4);border:1.5px dashed var(--line);border-radius:var(--r-l);color:var(--fg-2)}
+.rules{display:grid;gap:var(--s2);padding-left:1.1em;margin:0;color:var(--fg-2);font-size:var(--t-callout)}
+.rules b{color:var(--fg)}
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="lead">
+      <span class="eyebrow">Design-System · Entwurf 0.1</span>
+      <h1>KI Common UI</h1>
+      <p class="muted">Gemeinsame Oberfläche für alle KI-Projekte im Browser: eine App-Shell, ein Satz Tokens, wenige Komponenten. Angelehnt an Apples Human Interface Guidelines (Klarheit, Zurückhaltung, Tiefe), aber plattformneutral für Web.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Erscheinungsbild">
+      <button id="th-sys" aria-pressed="true" data-t="">System</button>
+      <button id="th-light" aria-pressed="false" data-t="light">Hell</button>
+      <button id="th-dark" aria-pressed="false" data-t="dark">Dunkel</button>
+    </div>
+  </header>
+
+  <!-- ===== App-Shell ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="eyebrow">1 · App-Shell</span>
+      <h2>Das Gerüst, das jedes Projekt erbt</h2>
+      <p class="muted">Sidebar für Navigation, Arbeitsfläche mit Verlauf und Eingabe, Inspector für Modell- und Laufparameter. Unter 1060 px fällt der Inspector weg, unter 720 px die Sidebar.</p>
+    </div>
+
+    <div class="shell">
+      <aside class="side">
+        <div class="side-head">
+          <div class="logo">K</div>
+          <strong>Werkbank</strong>
+          <span style="flex:1"></span>
+          <button class="icon-btn" aria-label="Neuer Chat"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <nav>
+          <div class="nav-label">Projekte</div>
+          <a class="nav-item" href="#" aria-current="page"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Protokoll-Analyse<span class="count">12</span></a>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg>Doku-Suche (RAG)<span class="count">4</span></a>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M4 17l6-6 4 4 6-8"/></svg>Messdaten-Agent<span class="count">7</span></a>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Smart-Home-Assistent</a>
+          <div class="nav-label">Werkzeuge</div>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M14 4l6 6-10 10H4v-6z"/></svg>Prompts</a>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>Modelle &amp; Schlüssel</a>
+          <a class="nav-item" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Kosten</a>
+        </nav>
+        <div class="side-foot"><div class="avatar">CM</div>Lokal · v0.1<span style="flex:1"></span><span class="kbd">⌘K</span></div>
+      </aside>
+
+      <main class="main">
+        <div class="toolbar">
+          <h3>CAN-Trace auswerten</h3>
+          <span class="chip ok">Verbunden</span>
+          <span class="spacer"></span>
+          <div class="seg" role="group" aria-label="Ansicht">
+            <button aria-pressed="true" id="v-chat">Chat</button>
+            <button aria-pressed="false" id="v-out">Ergebnis</button>
+          </div>
+          <button class="icon-btn" aria-label="Teilen"><svg class="i" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 13v6h14v-6"/></svg></button>
+        </div>
+
+        <div class="thread">
+          <div class="msg user">
+            <div class="avatar">CM</div>
+            <div><div class="who">Du</div>
+              <div class="bubble">Welche Botschaften im Trace von heute 09:14 haben eine Zykluszeit über 100 ms?</div></div>
+          </div>
+          <div class="msg">
+            <div class="ai-dot"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div>
+            <div><div class="who">Assistent · claude-sonnet-5-5</div>
+              <div class="bubble">
+                <details class="tool-call">
+                  <summary><span class="chip ai">Werkzeug</span> trace.filter(cycle_ms &gt; 100) <span style="flex:1"></span><span class="hint">0,8 s</span></summary>
+                  <pre>{ "file": "trace_0914.blf", "rows": 18 422, "match": 3 }</pre>
+                </details>
+                <p>Drei Botschaften liegen über 100 ms: <b>0x1A0 EngineStatus</b> mit 142 ms <span class="cite">1</span>, <b>0x2F4 BrakeInfo</b> mit 118 ms <span class="cite">2</span> und <b>0x330 Diag</b> mit 104 ms. Bei 0x1A0 fällt die Zeit ab 09:14:32 sprunghaft an.</p>
+              </div></div>
+          </div>
+          <div class="msg">
+            <div class="ai-dot"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div>
+            <div><div class="who">Assistent</div><div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div></div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <textarea id="prompt" rows="2" placeholder="Frage stellen oder Datei ablegen …"></textarea>
+          <div class="bar">
+            <button class="icon-btn" aria-label="Datei anhängen"><svg class="i" viewBox="0 0 24 24"><path d="M20 11l-8 8a5 5 0 0 1-7-7l8-8a3.5 3.5 0 0 1 5 5l-8 8a2 2 0 0 1-3-3l7-7"/></svg></button>
+            <span class="chip neutral">trace_0914.blf</span>
+            <span style="flex:1"></span>
+            <span class="hint">Enter senden · Shift+Enter Zeile</span>
+            <button class="btn btn-primary">Senden</button>
+          </div>
+        </div>
+      </main>
+
+      <aside class="inspector">
+        <h3>Lauf</h3>
+        <div class="field"><label for="model">Modell</label>
+          <select class="input" id="model"><option>claude-sonnet-5-5</option><option>claude-opus-5-5</option><option>claude-haiku-5-5</option><option>lokal · llama</option></select></div>
+        <div class="field"><label for="temp">Temperatur · 0,3</label><input type="range" id="temp" min="0" max="1" step=".1" value=".3"></div>
+        <div class="row"><span>Werkzeuge erlauben</span><label class="switch"><input type="checkbox" id="tools" checked aria-label="Werkzeuge erlauben"><span></span></label></div>
+        <div class="row"><span>Quellen anzeigen</span><label class="switch"><input type="checkbox" id="cites" checked aria-label="Quellen anzeigen"><span></span></label></div>
+        <div class="field"><label>Kontext · 38 k von 200 k Token</label><div class="meter"><span style="width:19%"></span></div></div>
+        <dl class="kv"><dt>Laufzeit</dt><dd>4,2 s</dd><dt>Eingabe</dt><dd>38 214 Tok</dd><dt>Ausgabe</dt><dd>612 Tok</dd><dt>Kosten</dt><dd>0,12 €</dd></dl>
+        <button class="btn btn-secondary">Als Vorlage speichern</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== Tokens ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="eyebrow">2 · Tokens</span>
+      <h2>Farbe, Schrift, Abstand</h2>
+      <p class="muted">Komponenten verwenden nur diese Variablen. Hell und Dunkel teilen dieselben Namen, deshalb wirkt der Theme-Umschalter oben sofort überall.</p>
+    </div>
+    <div class="panel">
+      <h3>Farben</h3>
+      <div class="swatches">
+        <div class="sw"><b style="background:var(--bg)"></b>Hintergrund<code>--bg</code></div>
+        <div class="sw"><b style="background:var(--surface)"></b>Fläche<code>--surface</code></div>
+        <div class="sw"><b style="background:var(--surface-2)"></b>Fläche 2<code>--surface-2</code></div>
+        <div class="sw"><b style="background:var(--fg)"></b>Text<code>--fg</code></div>
+        <div class="sw"><b style="background:var(--accent)"></b>Akzent<code>--accent</code></div>
+        <div class="sw"><b style="background:var(--ai)"></b>KI-Inhalt<code>--ai</code></div>
+        <div class="sw"><b style="background:var(--ok)"></b>Erfolg<code>--ok</code></div>
+        <div class="sw"><b style="background:var(--warn)"></b>Warnung<code>--warn</code></div>
+        <div class="sw"><b style="background:var(--err)"></b>Fehler<code>--err</code></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="panel">
+        <h3>Schriftskala</h3>
+        <div class="typescale">
+          <div><code>large · 34</code><span style="font:700 var(--t-large) var(--font-display)">Large Title</span></div>
+          <div><code>title2 · 22</code><span style="font:650 var(--t-title2) var(--font-display)">Title 2</span></div>
+          <div><code>headline · 17</code><span style="font:600 var(--t-headline) var(--font)">Headline</span></div>
+          <div><code>body · 15</code><span>Body für Fließtext</span></div>
+          <div><code>caption · 12</code><span style="font-size:var(--t-caption)">Caption, Hinweise</span></div>
+          <div><code>mono · 12</code><span style="font:12px var(--mono)">0x1A0 142 ms</span></div>
+        </div>
+        <p class="hint">Systemschrift zuerst: SF Pro auf Apple, Segoe UI Variable auf Windows, Inter als Rückfall.</p>
+      </div>
+      <div class="panel">
+        <h3>Abstände · 4-pt-Raster</h3>
+        <div class="spacing">
+          <div><i style="width:4px"></i>s1 · 4</div><div><i style="width:8px"></i>s2 · 8</div>
+          <div><i style="width:12px"></i>s3 · 12</div><div><i style="width:16px"></i>s4 · 16</div>
+          <div><i style="width:24px"></i>s5 · 24</div><div><i style="width:32px"></i>s6 · 32</div>
+          <div><i style="width:48px"></i>s7 · 48</div>
+        </div>
+        <p class="hint">Radien 6 / 10 / 14 / Pille. Klickziele mindestens 44 px auf Touch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Komponenten ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="eyebrow">3 · Komponenten</span>
+      <h2>Bausteine</h2>
+    </div>
+    <div class="grid">
+      <div class="panel">
+        <h3>Buttons</h3>
+        <div class="cluster">
+          <button class="btn btn-primary">Ausführen</button>
+          <button class="btn btn-secondary">Abbrechen</button>
+          <button class="btn btn-plain">Details</button>
+          <button class="btn btn-danger">Löschen</button>
+          <button class="btn btn-primary" disabled>Gesperrt</button>
+        </div>
+        <p class="hint">Pro Ansicht genau ein Primär-Button.</p>
+      </div>
+      <div class="panel">
+        <h3>Status</h3>
+        <div class="cluster">
+          <span class="chip ok">Fertig</span><span class="chip warn">Langsam</span><span class="chip err">Fehler</span><span class="chip ai">KI-generiert</span><span class="chip neutral">Entwurf</span>
+        </div>
+        <p class="hint">Status immer mit Text, nie nur über Farbe.</p>
+      </div>
+      <div class="panel">
+        <h3>Formular</h3>
+        <div class="field"><label for="f-name">Projektname</label><input class="input" id="f-name" value="Protokoll-Analyse"><span class="hint">Erscheint in der Sidebar.</span></div>
+        <div class="field"><label for="f-key">API-Endpunkt</label><input class="input" id="f-key" value="http://localhost:8080/v1"></div>
+      </div>
+      <div class="panel">
+        <h3>Rückmeldung</h3>
+        <div class="toast"><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Vorlage gespeichert<button class="btn btn-plain" style="color:var(--bg);min-height:28px">Rückgängig</button></div>
+        <div class="empty"><svg class="i" viewBox="0 0 24 24" style="width:28px;height:28px"><path d="M4 7h16v12H4zM8 7V5h8v2"/></svg><strong>Noch keine Läufe</strong><span class="hint">Lege eine Datei ab oder stelle eine Frage, um zu starten.</span></div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lauf</th><th>Modell</th><th>Status</th><th style="text-align:right">Dauer</th><th style="text-align:right">Kosten</th></tr></thead>
+        <tbody>
+          <tr><td>CAN-Trace auswerten</td><td>sonnet-5-5</td><td><span class="chip ok">Fertig</span></td><td class="num">4,2 s</td><td class="num">0,12 €</td></tr>
+          <tr><td>Handbuch indexieren</td><td>haiku-5-5</td><td><span class="chip warn">Läuft</span></td><td class="num">1:48 min</td><td class="num">0,03 €</td></tr>
+          <tr><td>Regel für Heizung</td><td>lokal · llama</td><td><span class="chip err">Fehler</span></td><td class="num">0,4 s</td><td class="num">0,00 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="eyebrow">4 · Regeln</span><h2>Was aus den HIG übernommen wird</h2></div>
+    <div class="panel">
+      <ol class="rules">
+        <li><b>Klarheit:</b> Inhalt vor Chrome. Toolbar und Sidebar ruhig, Farbe nur für Aktion und Status.</li>
+        <li><b>Zurückhaltung:</b> Ein Akzent, semantische Farben getrennt davon, KI-Inhalte mit eigenem Violett erkennbar.</li>
+        <li><b>Tiefe:</b> Durchscheinendes Material nur für schwebende Leisten, Schatten nur für Ebenen über dem Inhalt.</li>
+        <li><b>Hell und Dunkel</b> von Anfang an über Tokens, nie mit festen Farben in Komponenten.</li>
+        <li><b>Barrierefreiheit:</b> sichtbarer Fokus, Kontrast AA, reduzierte Bewegung respektieren, 44 px Ziele.</li>
+        <li><b>KI-spezifisch:</b> Werkzeugaufrufe aufklappbar, Quellen als Nummern, Kosten und Kontext immer sichtbar.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('.top .seg button');
+  function apply(t){
+    if(t) document.documentElement.setAttribute('data-theme',t); else document.documentElement.removeAttribute('data-theme');
+    btns.forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.t===t));});
+    try{localStorage.setItem('cui-theme',t)}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.t)})});
+  var saved=''; try{saved=localStorage.getItem('cui-theme')||''}catch(e){}
+  apply(saved);
+  document.querySelectorAll('.toolbar .seg button').forEach(function(b,_,all){
+    b.addEventListener('click',function(){all.forEach(function(x){x.setAttribute('aria-pressed',String(x===b))})});
+  });
+  var temp=document.getElementById('temp');
+  temp.addEventListener('input',function(){temp.previousElementSibling.textContent='Temperatur · '+String(temp.value).replace('.',',')});
+})();
+</script>

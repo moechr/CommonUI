@@ -1,0 +1,70 @@
+/* KI Common UI · Design-Tokens
+   Komponenten verwenden ausschließlich diese Variablen.
+   Hell = :root, Dunkel = System-Präferenz oder data-theme="dark". */
+
+:root {
+  /* Farbe */
+  --cui-bg: #F5F7F9;
+  --cui-surface: #FFFFFF;
+  --cui-surface-2: #EEF2F5;
+  --cui-fill: #E3E9EE;
+  --cui-fg: #16212B;
+  --cui-fg-2: #4D5B68;
+  --cui-fg-3: #7D8A96;
+  --cui-line: #D8E0E6;
+  --cui-accent: #0B6B8F;
+  --cui-accent-fg: #FFFFFF;
+  --cui-accent-soft: #DCEFF6;
+  --cui-ok: #1E8550;     --cui-ok-soft: #DDF2E6;
+  --cui-warn: #A8670F;   --cui-warn-soft: #FBEBD2;
+  --cui-err: #C1324A;    --cui-err-soft: #F9DEE3;
+  --cui-ai: #6B4FD6;     --cui-ai-soft: #ECE7FC;
+  --cui-material: rgba(255, 255, 255, .72);
+  --cui-knob: #FFFFFF;
+
+  /* Schrift (Systemschrift zuerst, wie in den HIG) */
+  --cui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+  --cui-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", Inter, system-ui, sans-serif;
+  --cui-mono: "SF Mono", "JetBrains Mono", Consolas, ui-monospace, monospace;
+  --cui-t-large: 34px;
+  --cui-t-title1: 28px;
+  --cui-t-title2: 22px;
+  --cui-t-title3: 20px;
+  --cui-t-headline: 17px;
+  --cui-t-body: 15px;
+  --cui-t-callout: 14px;
+  --cui-t-caption: 12px;
+
+  /* Abstand (4-pt-Raster) */
+  --cui-s1: 4px; --cui-s2: 8px; --cui-s3: 12px; --cui-s4: 16px;
+  --cui-s5: 24px; --cui-s6: 32px; --cui-s7: 48px;
+
+  /* Form */
+  --cui-r-s: 6px; --cui-r-m: 10px; --cui-r-l: 14px; --cui-r-pill: 999px;
+  --cui-shadow: 0 1px 2px rgba(16, 33, 43, .06), 0 8px 24px rgba(16, 33, 43, .08);
+  --cui-hit: 44px;
+  --cui-ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --cui-bg: #0E1418; --cui-surface: #161E24; --cui-surface-2: #1C262D; --cui-fill: #25313A;
+    --cui-fg: #E8EEF2; --cui-fg-2: #A9B6C0; --cui-fg-3: #76848F; --cui-line: #2A3740;
+    --cui-accent: #4FB4DA; --cui-accent-fg: #06222D; --cui-accent-soft: #12313D;
+    --cui-ok: #4CC488; --cui-ok-soft: #123224; --cui-warn: #E3A64A; --cui-warn-soft: #352610;
+    --cui-err: #F0687F; --cui-err-soft: #3A1720; --cui-ai: #A794F5; --cui-ai-soft: #251E44;
+    --cui-material: rgba(22, 30, 36, .72); --cui-knob: #F2F5F7;
+    --cui-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --cui-bg: #0E1418; --cui-surface: #161E24; --cui-surface-2: #1C262D; --cui-fill: #25313A;
+  --cui-fg: #E8EEF2; --cui-fg-2: #A9B6C0; --cui-fg-3: #76848F; --cui-line: #2A3740;
+  --cui-accent: #4FB4DA; --cui-accent-fg: #06222D; --cui-accent-soft: #12313D;
+  --cui-ok: #4CC488; --cui-ok-soft: #123224; --cui-warn: #E3A64A; --cui-warn-soft: #352610;
+  --cui-err: #F0687F; --cui-err-soft: #3A1720; --cui-ai: #A794F5; --cui-ai-soft: #251E44;
+  --cui-material: rgba(22, 30, 36, .72); --cui-knob: #F2F5F7;
+  --cui-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
